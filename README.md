@@ -20,20 +20,21 @@ The asset folders are ready for local files if desired. Current event/editorial 
 At the top of script.js, edit the CONFIG object:
 
 - registrationURL: the public Google Form is set to https://forms.gle/k9i8jBswSTLhjer68. Registration calls-to-action open it in a new tab.
-- eventDate: enter an ISO date/time with timezone, for example 2026-10-12T09:30:00+05:30. Keep it empty while the date/time is unannounced; the timer then shows dashes.
-- qrImageURL: set this to the QR image extracted from the event PDF (for example assets/images/registration-qr.png). The QR section is the target of every registration button.
+- eventDate: set to 2026-10-13T09:30:00+05:30 (13 October 2026, 9:30 AM India Standard Time). The year follows the current event year and the timezone follows the host college's location in India. The event countdown updates days, hours, minutes, and seconds automatically.
+- roundSchedule: the three rounds are set to 13 October 2026, 10:00–11:30 AM, 11:45 AM–1:30 PM, and 2:00–3:30 PM, all in India Standard Time. Each round counts down to its start, then to its end while in progress, and shows zero with a completed status afterward. Edit these ISO timestamps if the schedule changes.
+- qrImageURL: points to the bundled registration QR at assets/images/registration-qr.png. The code opens registrationURL and can also be clicked or tapped. If registrationURL changes, regenerate this image to match.
 - collegeEmail, collegePhone, coordinatorPhone: update official contact details in one place.
 - canonicalURL: replace the example URL with the deployed site URL.
 - socialURLs: add official profile links only after the organizers confirm them.
 
-Registration buttons open the configured Google Form; the PDF QR remains available in the QR section. The QR cropped from the supplied WhatsApp poster image is saved as assets/images/registration-qr.png and configured in script.js. Replace that path only if the registration QR changes.
+Registration buttons open the configured Google Form. A generated QR image for that same form is bundled locally in assets/images/registration-qr.png, so displaying it does not depend on an external QR service. The registration section also provides a direct form link if the image cannot load.
 
 
-The registration deadline supplied in the brief is shown as 12 October before 12 PM. The year and event date/time were not supplied, so they are not assumed in the countdown.
+The registration deadline supplied in the brief is shown as 12 October before 12 PM. The confirmed event date and start time are 13 October at 9:30 AM; the countdown uses 2026 and India Standard Time.
 
 ## Run locally
 
-Open index.html directly in a modern browser, or serve the folder using a static file server. There is no build step. Internet access is needed for Google Fonts, Unsplash images and QRServer-generated QR images; you can download appropriately licensed images into assets/images/ for offline use.
+Open index.html directly in a modern browser, or serve the folder using a static file server. There is no build step. Internet access is needed for Google Fonts, Unsplash images, and the registration form; the QR image is served locally.
 
 ## Deploy on Netlify
 
@@ -49,10 +50,10 @@ Open index.html directly in a modern browser, or serve the folder using a static
 
 ## Notes
 
-- All provided timings and rules come from the supplied brief. Event date, venue, prize information, official social profiles and real scores were not provided.
+- Round timings and rules come from the supplied brief, and the event date and start time were confirmed as 13 October at 9:30 AM. Venue, prize information, official social profiles and real scores were not provided.
 - The college discovery link is a Google search because an official college URL was not supplied.
 - The code is intentionally framework-free and can be hosted on GitHub Pages, Netlify or Render Static Sites.
 
 Section backdrops use event-related Unsplash images and rotate every five seconds; the hero slider has its own image rotation. The dark overlays preserve readable text.
 
-The college gallery and contact sections use the supplied campus photos saved under assets/images/ (2x upscaled and lightly sharpened while preserving the original building details).
+The college gallery uses both supplied campus photos, saved unchanged under assets/images/. college-campus-front.png shows the BBA college entrance and is also displayed in the contact section. college-host-campus.png shows an elevated campus view and is also used as the host college section's background. Both photos are available through the Campus gallery filter and image viewer.

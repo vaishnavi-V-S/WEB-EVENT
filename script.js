@@ -1,16 +1,15 @@
-const CONFIG={registrationURL:'https://forms.gle/k9i8jBswSTLhjer68',eventDate:'',collegeEmail:'klebbaank@gmail.com',collegePhone:'8550028808',coordinatorPhone:'7022894308',qrImageURL:'assets/images/registration-qr.png',canonicalURL:'https://example.com/promptpreneur/',socialURLs:{instagram:'',facebook:'',linkedin:''}};
-// Replaceable editorial Unsplash images plus the supplied, enhanced college photos.
+const CONFIG={registrationURL:'https://forms.gle/k9i8jBswSTLhjer68',eventDate:'2026-10-13T09:30:00+05:30',roundSchedule:[{start:'2026-10-13T10:00:00+05:30',end:'2026-10-13T11:30:00+05:30'},{start:'2026-10-13T11:45:00+05:30',end:'2026-10-13T13:30:00+05:30'},{start:'2026-10-13T14:00:00+05:30',end:'2026-10-13T15:30:00+05:30'}],collegeEmail:'klebbaank@gmail.com',collegePhone:'8550028808',coordinatorPhone:'7022894308',qrImageURL:'assets/images/registration-qr.png',canonicalURL:'https://example.com/promptpreneur/',socialURLs:{instagram:'',facebook:'',linkedin:''}};
+// Replaceable editorial Unsplash images plus the supplied college photos.
 const EVENT_IMAGES=[
 {url:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1800&q=85',title:'Ideas are better together',category:'teamwork',tag:'TEAMWORK'},
 {url:'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1800&q=85',title:'A new intelligence',category:'ai',tag:'ARTIFICIAL INTELLIGENCE'},
 {url:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=85',title:'Build on each other’s thinking',category:'teamwork',tag:'TEAMWORK'},
 {url:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=85',title:'Make the idea real',category:'innovation',tag:'INNOVATION'},
-{url:'assets/images/college-gallery-hd.jpg',title:'KLE SOCIETY’S BBA COLLEGE ANKALI',category:'campus',tag:'HOST CAMPUS'},
+{url:'assets/images/college-campus-front.png',title:'KLE Society’s BBA College Ankali — front entrance',category:'campus',tag:'BBA COLLEGE / ANKALI'},
 {url:'https://images.unsplash.com/photo-1503428593586-e225b39bfd8a?auto=format&fit=crop&w=1800&q=85',title:'A moment worth celebrating',category:'winners',tag:'CELEBRATION'},
 {url:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=85',title:'Create what comes next',category:'innovation',tag:'INNOVATION'},
 {url:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85',title:'Think beyond the prompt',category:'ai',tag:'DIGITAL FUTURES'},
-{url:'assets/images/college-gallery-hd.jpg',title:'KLE SOCIETY’S BBA COLLEGE ANKALI',category:'campus',tag:'HOST CAMPUS'},
-{url:'assets/images/college-contact-hd.jpg',title:'College campus at Ankali',category:'campus',tag:'CAMPUS / ANKALI'}];
+{url:'assets/images/college-host-campus.png',title:'KLE Society’s BBA College Ankali — elevated campus view',category:'campus',tag:'HOST CAMPUS'}];
 const GALLERY_IMAGES=EVENT_IMAGES.concat([
 
 {url:'assets/images/promptpreneur-poster-ideas.jpeg',title:'PROMPTPRENEUR — Think, Prompt, Build, Lead',category:'innovation',tag:'EVENT ART',poster:true},
@@ -91,8 +90,35 @@ if (!reduced) window.setInterval(() => {
   });
 }, 5000);
 
-// Leave event date blank until the organizer confirms the date and time.
-function countdown(){if(!CONFIG.eventDate){['days','hours','minutes','seconds'].forEach(id=>$('#'+id).textContent='—');return}let end=new Date(CONFIG.eventDate).getTime(),left=end-Date.now();if(!Number.isFinite(end))return;if(left<=0){$('.countdown').innerHTML='<strong class="begun">THE CHALLENGE HAS BEGUN!</strong>';return}let n=[Math.floor(left/86400000),Math.floor(left/3600000)%24,Math.floor(left/60000)%60,Math.floor(left/1000)%60];['days','hours','minutes','seconds'].forEach((id,i)=>$('#'+id).textContent=String(n[i]).padStart(2,'0'))}countdown();setInterval(countdown,1000);
+function countdownParts(remaining){
+  if(!Number.isFinite(remaining))return ['—','—','—','—'];
+  const totalSeconds=Math.max(0,Math.ceil(remaining/1000));
+  return [Math.floor(totalSeconds/86400),Math.floor(totalSeconds/3600)%24,Math.floor(totalSeconds/60)%60,totalSeconds%60].map(value=>String(value).padStart(2,'0'));
+}
+function updateTimer(element,remaining){
+  const values=countdownParts(remaining);
+  element.querySelectorAll('[data-unit]').forEach((unit,index)=>{unit.textContent=values[index]});
+}
+function updateStatus(element,message){
+  if(element.textContent!==message)element.textContent=message;
+}
+function countdown(){
+  const now=Date.now(),eventStart=new Date(CONFIG.eventDate).getTime();
+  updateTimer($('.countdown'),eventStart-now);
+  updateStatus($('#event-countdown-status'),!Number.isFinite(eventStart)?'Event date and time to be announced.':now>=eventStart?'THE CHALLENGE HAS BEGUN!':'COUNTING DOWN TO EVENT DAY');
+  $$('.round-card').forEach((card,index)=>{
+    const schedule=CONFIG.roundSchedule[index];
+    const start=new Date(schedule?.start).getTime(),end=new Date(schedule?.end).getTime();
+    const valid=Number.isFinite(start)&&Number.isFinite(end)&&end>start;
+    const state=!valid?'unannounced':now<start?'upcoming':now<end?'live':'completed';
+    const remaining=!valid?NaN:state==='upcoming'?start-now:state==='live'?end-now:0;
+    card.dataset.state=state;
+    updateTimer(card.querySelector('.round-countdown'),remaining);
+    updateStatus(card.querySelector('.round-countdown-status'),{unannounced:'Schedule to be announced',upcoming:'Starts in',live:'Round in progress · ends in',completed:'Round completed'}[state]);
+  });
+}
+countdown();setInterval(countdown,1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)countdown()});
 // Gallery filtering and keyboard accessible lightbox.
 // Gallery cards plus an autoplaying slideshow of the three supplied event posters.
 let grid=$('#gallery-grid');
@@ -126,12 +152,18 @@ $$('.gallery-filters button').forEach(b=>b.addEventListener('click',()=>{
   $$('.gallery-item').forEach(x=>x.hidden=b.dataset.filter!=='all'&&x.dataset.category!==b.dataset.filter);
   posterCard.hidden=b.dataset.filter!=='all'&&!posterSlides.some(im=>im.category===b.dataset.filter);
 }));
-let box=$('#lightbox'),boxImg=$('figure img',box),boxCap=$('figcaption',box),shown=[],boxIndex=0,focusBefore=null;
+let box=$('#lightbox'),boxImg=box.querySelector('figure img'),boxCap=box.querySelector('figcaption'),shown=[],boxIndex=0,focusBefore=null;
 function openBox(i){let f=$('.gallery-filters .active').dataset.filter;shown=GALLERY_IMAGES.filter(x=>f==='all'||x.category===f);boxIndex=shown.indexOf(GALLERY_IMAGES[i]);focusBefore=document.activeElement;updateBox();box.classList.add('open');box.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';$('.lightbox-close').focus()}
 function updateBox(){let x=shown[boxIndex];if(x){boxImg.src=x.url;boxImg.alt=x.title;boxCap.textContent=x.title+' — '+x.tag}}
 function closeBox(){box.classList.remove('open');box.setAttribute('aria-hidden','true');document.body.style.overflow='';if(focusBefore)focusBefore.focus()}
 function moveBox(n){boxIndex=(boxIndex+n+shown.length)%shown.length;updateBox()}
 $('.lightbox-close').addEventListener('click',closeBox);$('.lightbox-prev').addEventListener('click',()=>moveBox(-1));$('.lightbox-next').addEventListener('click',()=>moveBox(1));box.addEventListener('click',e=>{if(e.target===box)closeBox()});document.addEventListener('keydown',e=>{if(!box.classList.contains('open'))return;if(e.key==='Escape')closeBox();if(e.key==='ArrowLeft')moveBox(-1);if(e.key==='ArrowRight')moveBox(1)});
-// QR uses an editable image URL or a QR generated from the public Google Form URL.
-let qr=$('#qr-placeholder');if(CONFIG.qrImageURL)qr.innerHTML='<img src="'+CONFIG.qrImageURL+'" alt="Registration QR code">';else if(CONFIG.registrationURL)qr.innerHTML='<img src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data='+encodeURIComponent(CONFIG.registrationURL)+'" alt="QR code for registration form">';
+const qrImage=$('#qr-placeholder img'),qrLink=$('#qr-placeholder');
+qrLink.href=CONFIG.registrationURL;
+qrImage.addEventListener('error',()=>{
+  qrImage.hidden=true;
+  $('#qr-error').hidden=false;
+});
+qrImage.src=CONFIG.qrImageURL;
+if(qrImage.complete&&!qrImage.naturalWidth)qrImage.dispatchEvent(new Event('error'));
 let canonical=$('link[rel="canonical"]');if(canonical)canonical.href=CONFIG.canonicalURL;let ig=$('.social-links a[aria-label^="Instagram"]');if(CONFIG.socialURLs.instagram){ig.href=CONFIG.socialURLs.instagram;ig.target='_blank';ig.rel='noopener';ig.setAttribute('aria-label','Visit Instagram')}
