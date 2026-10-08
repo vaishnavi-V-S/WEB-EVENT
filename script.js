@@ -6,18 +6,17 @@ const EVENT_IMAGES=[
 {url:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=85',title:'Build on each other’s thinking',category:'teamwork',tag:'TEAMWORK'},
 {url:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=85',title:'Make the idea real',category:'innovation',tag:'INNOVATION'},
 {url:'assets/images/college-campus-front.png',title:'KLE Society’s BBA College Ankali — front entrance',category:'campus',tag:'BBA COLLEGE / ANKALI'},
-{url:'https://images.unsplash.com/photo-1503428593586-e225b39bfd8a?auto=format&fit=crop&w=1800&q=85',title:'A moment worth celebrating',category:'winners',tag:'CELEBRATION'},
 {url:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=85',title:'Create what comes next',category:'innovation',tag:'INNOVATION'},
 {url:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85',title:'Think beyond the prompt',category:'ai',tag:'DIGITAL FUTURES'},
 {url:'assets/images/college-host-campus.png',title:'KLE Society’s BBA College Ankali — elevated campus view',category:'campus',tag:'HOST CAMPUS'}];
 const GALLERY_IMAGES=EVENT_IMAGES.concat([
 
-{url:'assets/images/promptpreneur-poster-ideas.jpeg',title:'PROMPTPRENEUR — Think, Prompt, Build, Lead',category:'innovation',tag:'EVENT ART',poster:true},
 {url:'assets/images/promptpreneur-poster-lightbulb.jpeg',title:'PROMPTPRENEUR — Your Ideas Can Build What’s Next',category:'ai',tag:'EVENT ART',poster:true},
+{url:'assets/images/promptpreneur-poster-ideas.jpeg',title:'PROMPTPRENEUR — From Ideas to Impact',category:'innovation',tag:'EVENT ART',poster:true},
 {url:'assets/images/promptpreneur-event-flyer.jpeg',title:'PROMPTPRENEUR — Registration Flyer',category:'campus',tag:'EVENT FLYER',poster:true}
 
 ]);
-const HERO_SLIDES=[{image:EVENT_IMAGES[0].url,title:'IDEAS ARE BETTER TOGETHER',label:'TEAMWORK / 01'},{image:EVENT_IMAGES[1].url,title:'A NEW INTELLIGENCE',label:'ARTIFICIAL INTELLIGENCE / 02'},{image:EVENT_IMAGES[3].url,title:'MAKE THE IDEA REAL',label:'INNOVATION / 03'},{image:EVENT_IMAGES[6].url,title:'CREATE WHAT COMES NEXT',label:'ENTREPRENEURSHIP / 04'}];
+const HERO_SLIDES=[{image:EVENT_IMAGES[0].url,title:'IDEAS ARE BETTER TOGETHER',label:'TEAMWORK / 01'},{image:EVENT_IMAGES[1].url,title:'A NEW INTELLIGENCE',label:'ARTIFICIAL INTELLIGENCE / 02'},{image:EVENT_IMAGES[3].url,title:'MAKE THE IDEA REAL',label:'INNOVATION / 03'},{image:EVENT_IMAGES[5].url,title:'CREATE WHAT COMES NEXT',label:'ENTREPRENEURSHIP / 04'}];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const header=$('.site-header'),nav=$('.nav'),toggle=$('.menu-toggle');
@@ -42,9 +41,9 @@ function draw(){let w=canvas.width/Math.min(devicePixelRatio||1,2),h=canvas.heig
 resizeParticles();if(!reduced)draw();addEventListener('resize',resizeParticles,{passive:true});
 // Rotating Unsplash photo backdrops, selected to match each section's event theme.
 const sectionImageSets = {
-  challenge: [EVENT_IMAGES[1].url, EVENT_IMAGES[6].url, EVENT_IMAGES[7].url],
+  challenge: [EVENT_IMAGES[1].url, EVENT_IMAGES[5].url, EVENT_IMAGES[6].url],
   rounds: [EVENT_IMAGES[1].url, EVENT_IMAGES[3].url, EVENT_IMAGES[2].url],
-  schedule: [EVENT_IMAGES[0].url, EVENT_IMAGES[4].url, EVENT_IMAGES[6].url]
+  schedule: [EVENT_IMAGES[0].url, EVENT_IMAGES[4].url, EVENT_IMAGES[5].url]
 };
 const themedBackdrops = Object.entries(sectionImageSets).map(([id, images]) => {
   const section = document.getElementById(id);

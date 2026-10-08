@@ -13,7 +13,7 @@ PROMPTPRENEUR/
     |-- icons/
     |-- logo/
 
-The asset folders are ready for local files if desired. Current event/editorial images load from Unsplash URLs listed at the top of script.js in EVENT_IMAGES and HERO_SLIDES. They illustrate the event theme and are not photographs from PROMPTPRENEUR. Replace those URLs with your own authorized image URLs or local paths such as assets/images/team.jpg.
+The gallery artwork slideshow uses three supplied images bundled in assets/images/: promptpreneur-poster-lightbulb.jpeg (Your Ideas Can Build What’s Next), promptpreneur-poster-ideas.jpeg (From Ideas to Impact), and promptpreneur-event-flyer.jpeg (Registration Flyer). The artwork can also be opened in the gallery image viewer. Other event/editorial images load from Unsplash URLs listed at the top of script.js in EVENT_IMAGES and HERO_SLIDES. They illustrate the event theme and are not photographs from PROMPTPRENEUR. Replace those URLs with your own authorized image URLs or local paths such as assets/images/team.jpg.
 
 ## Update event settings
 
